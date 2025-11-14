@@ -1,0 +1,31 @@
+{
+  "name": "playwright_project",
+  "version": "1.0.0",
+  "main": "index.js",
+  "description": "This repository offers a comprehensive, step-by-step guide to building an automation testing framework using Playwright.",
+  "scripts": {
+    "test": "npx playwright test --project=chromium",
+    "ci": "npx playwright test --project=chromium --workers=1",
+    "flaky": "npx playwright test --project=chromium --repeat-each=20",
+    "debug": "npx playwright test --project=chromium --debug",
+    "ui": "npx playwright test --project=chromium --ui",
+    "smoke": "npx playwright test --grep @Smoke --project=chromium",
+    "sanity": "npx playwright test --grep @Sanity --project=chromium",
+    "api": "npx playwright test --grep @Api --project=chromium",
+    "regression": "npx playwright test --grep @Regression --project=chromium",
+    "e2e": "npx playwright test"
+  },
+  "keywords": [],
+  "author": "Muhammad Said",
+  "license": "ISC",
+  "devDependencies": {
+    "@faker-js/faker": "^10.1.0",
+    "@playwright/test": "^1.56.1",
+    "@types/dotenv": "^8.2.3",
+    "@types/node": "^24.10.0"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "zod": "^4.1.12"
+  }
+}

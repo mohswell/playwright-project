@@ -1,0 +1,91 @@
+/**
+ * Utility functions for various helper methods.
+ */
+
+import { API_URL, URL } from "../env";
+
+export function assertValue<T>(v: T | undefined, errorMessage: string): T {
+  if (v === undefined) {
+    throw new Error(errorMessage);
+  }
+
+  return v;
+}
+
+export const apiEndpoints = {
+  auth: {
+    login: "/users/login",
+    signup: "/users",
+  },
+  articles: {
+    list: "/articles",
+    detail: (slug: string) => `/articles/${slug}`,
+    comments: (slug: string) => `/articles/${slug}/comments`,
+    commentsDetail: (slug: string, commentId: number) => `/articles/${slug}/comments/${commentId}`,
+    favorite: (slug: string) => `/articles/${slug}/favorite`,
+    feed: "/articles/feed",
+  },
+  tags: "/tags",
+  user: "/user",
+  profile: (username: string) => `/profile/${username}`,
+  favorite: (slug: string) => `/articles/${slug}/favorite`,
+  feed: "/articles/feed",
+};
+
+export const httpStatusCodes = {
+  ok: 200,
+  created: 201,
+  noContent: 204,
+  badRequest: 400,
+  unauthorized: 401,
+  forbidden: 403,
+  notFound: 404,
+  conflict: 409,
+  internalServerError: 500,
+};
+
+export const apiPath = {
+  login: "/users/login",
+  signup: "/users",
+  articles: "/articles",
+  articlesDetail: "/articles/{slug}",
+  articlesComments: "/articles/{slug}/comments",
+  tags: "/tags",
+  user: "/user",
+  profile: "/profile/{username}",
+  favorite: "/articles/{slug}/favorite",
+  feed: "/articles/feed",
+  comments: "/comments",
+};
+
+
+export const environmentBaseUrls = {
+    ci: {
+      prefix: API_URL,
+      suffix: '.com',
+    },
+    local: {
+      api: API_URL,
+      home: URL,
+    },
+    production: {
+      api: API_URL,
+      home: URL,
+    },
+    staging: {
+      api: API_URL,
+      home: URL,
+    },
+};
+  
+
+export const uiPages = {
+    home: "/",
+    signIn: "/login",   
+    signUp: "/register",
+    settings: "/settings",
+    profile: (username: string) => `/profile/${username}`,
+    favorites: (username: string) => `/profile/${username}/favorites`,
+    articleDetail: (slug: string) => `/article/${slug}`,
+    articleCreate: "/editor",
+};

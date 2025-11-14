@@ -1,0 +1,19 @@
+{
+  "slug": "TEST-38544",
+  "title": "TEST",
+  "description": "TESTB",
+  "body": "TETSFAKGJ",
+  "tagList": [
+    "RE", "GRQ", "G3"
+  ],
+  "createdAt": "2025-11-11T13:44:53.646Z",
+  "updatedAt": "2025-11-11T13:44:53.646Z",
+  "favorited": false,
+  "favoritesCount": 0,
+  "author": {
+    "username": "muha",
+    "bio": ",ef ",
+    "image": "https://images.pexels.com/photos/189349/pexels-photo-189349.jpeg",
+    "following": false
+  }
+}
