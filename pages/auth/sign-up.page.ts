@@ -1,31 +1,16 @@
 import { Locator, Page, expect } from "@playwright/test";
-
+import { BasePage } from "../base.page";
 /**
  * This is the page object for the Sign Up functionality.
  * @export
  * @class SignUpPage
  * @typedef {SignUpPage}
  */
-export class SignUpPage {
-  constructor(private page: Page) {}
-
-  get navigation(): {
-    homePageLink: Locator;
-    conduitIcon: Locator;
-    haveAnAccountLink: Locator;
-    signInNavigationLink: Locator;
-    signUpPageTitle: Locator;
-    signUpNavigationLink: Locator;
-  } {
-    return {
-      homePageLink: this.page.getByRole("link", { name: "Home", exact: true }),
-      conduitIcon: this.page.getByRole("link", { name: "conduit" }),
-      haveAnAccountLink: this.page.getByText("Have an account?"),
-      signInNavigationLink: this.page.getByRole("link", { name: "Sign in" }),
-      signUpNavigationLink: this.page.getByRole("link", { name: "Sign up" }),
-      signUpPageTitle: this.page.getByRole("heading", { name: "Sign up" }),
-    };
+export class SignUpPage extends BasePage {
+  constructor(page: Page) {
+    super(page);
   }
+  // inherits navigation and titles from BasePage
 
   get form(): {
     usernameInput: Locator;
@@ -83,7 +68,7 @@ export class SignUpPage {
   }
 
   async assertSignUpFormDisplayed(): Promise<void> {
-    await expect(this.navigation.signUpPageTitle).toBeVisible();
+    await expect(this.signUpPageTitle).toBeVisible();
   }
 
   /**
