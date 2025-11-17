@@ -1,5 +1,5 @@
 import { Locator, Page, expect } from "@playwright/test";
-import { USER_NAME } from "../../env";
+import { BasePage } from "../base.page";
 
 /**
  * This is the page object for the Sign In functionality.
@@ -7,33 +7,13 @@ import { USER_NAME } from "../../env";
  * @class SignInPage
  * @typedef {SignInPage}
  */
-export class SignInPage {
-  constructor(private page: Page) {}
+export class SignInPage extends BasePage {
+  constructor(page: Page) {
+    super(page);
+  }
 
   getPage() {
     return this.page;
-  }
-
-  get navigation(): {
-    homePageLink: Locator;
-    conduitIcon: Locator;
-    needAnAccountLink: Locator;
-    signInNavigationLink: Locator;
-    signInPageTitle: Locator;
-    signUpNavigationLink: Locator;
-    usernameLink: Locator;
-    createArticleLink: Locator;
-  } {
-    return {
-      homePageLink: this.page.getByRole("link", { name: "Home", exact: true }),
-      conduitIcon: this.page.getByRole("link", { name: "conduit" }),
-      needAnAccountLink: this.page.getByText("Need an account?"),
-      signInNavigationLink: this.page.getByRole("link", { name: "Sign in" }),
-      signUpNavigationLink: this.page.getByRole("link", { name: "Sign up" }),
-      signInPageTitle: this.page.getByRole("heading", { name: "Sign in" }),
-      usernameLink: this.page.getByRole("link", { name: USER_NAME }),
-      createArticleLink: this.page.getByRole("link", { name: "New Article" }),
-    };
   }
 
   get form(): {
@@ -71,11 +51,11 @@ export class SignInPage {
   }
 
   async navigateToSignInPage(): Promise<void> {
-    await this.navigation.signInNavigationLink.click();
+    await super.navigateToSignInPage();
   }
 
   async assertSignInFormDisplayed(): Promise<void> {
-    await expect(this.navigation.signInPageTitle).toBeVisible();
+    await expect(this.signInPageTitle).toBeVisible();
   }
 
   async assertEmailOrPasswordInvalidErrorVisible(): Promise<void> {
@@ -83,6 +63,6 @@ export class SignInPage {
   }
 
   async assertUserIsLoggedIn(): Promise<void> {
-    await expect(this.navigation.usernameLink).toBeVisible();
+    await expect(this.profileIcon).toBeVisible();
   }
 }
