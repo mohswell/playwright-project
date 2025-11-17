@@ -1,43 +1,15 @@
 import { Page, Locator, expect } from "@playwright/test";
-
+import { BasePage } from "../base.page";
+import { USER_NAME } from "../../env";
 /**
  * This is the page object for the Profile functionality.
  * @export
  * @class ProfilePage
  * @typedef {ProfilePage}
  */
-export class ProfilePage {
-  constructor(private page: Page) {}
-
-  get navigation(): {
-    conduitIcon: Locator;
-    homePageLink: Locator;
-    createArticleButton: Locator;
-    settingsButton: Locator;
-    profileIcon: Locator;
-    profilePageTitle?: Locator;
-  } {
-    return {
-      conduitIcon: this.page.getByRole("link", { name: "conduit" }),
-
-      settingsButton: this.page.getByRole("link", {
-        name: "Settings",
-        exact: true,
-      }),
-      createArticleButton: this.page.getByRole("link", {
-        name: "Create article",
-      }),
-      homePageLink: this.page.getByRole("link", {
-        name: "Home",
-        exact: true,
-      }),
-      profileIcon: this.page.getByRole("link", {
-        name: process.env.USERNAME!,
-      }),
-      profilePageTitle: this.page.getByRole("heading", {
-        name: process.env.USERNAME!,
-      }),
-    };
+export class ProfilePage extends BasePage {
+  constructor(page: Page) {
+    super(page);
   }
 
   get actions(): {
