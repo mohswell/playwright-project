@@ -10,6 +10,10 @@ import { USER_NAME } from "../../env";
 export class SignInPage {
   constructor(private page: Page) {}
 
+  getPage() {
+    return this.page;
+  }
+
   get navigation(): {
     homePageLink: Locator;
     conduitIcon: Locator;
@@ -18,7 +22,7 @@ export class SignInPage {
     signInPageTitle: Locator;
     signUpNavigationLink: Locator;
     usernameLink: Locator;
-    
+    createArticleLink: Locator;
   } {
     return {
       homePageLink: this.page.getByRole("link", { name: "Home", exact: true }),
@@ -28,6 +32,7 @@ export class SignInPage {
       signUpNavigationLink: this.page.getByRole("link", { name: "Sign up" }),
       signInPageTitle: this.page.getByRole("heading", { name: "Sign in" }),
       usernameLink: this.page.getByRole("link", { name: USER_NAME }),
+      createArticleLink: this.page.getByRole("link", { name: "New Article" }),
     };
   }
 
@@ -59,6 +64,7 @@ export class SignInPage {
    * @param password - The password to sign in with.
    */
   async signIn(email: string, password: string): Promise<void> {
+    await this.navigateToSignInPage();
     await this.form.emailInput.fill(email);
     await this.form.passwordInput.fill(password);
     await this.actions.signInButton.click();
