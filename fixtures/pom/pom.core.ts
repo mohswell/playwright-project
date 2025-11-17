@@ -1,5 +1,5 @@
 import { test as base } from "@playwright/test";
-import { SignInPage, SignUpPage, ProfilePage, SettingsPage, Homepage } from "../../pages";
+import { SignInPage, SignUpPage, ProfilePage, SettingsPage, Homepage, NavBarPage } from "../../pages";
 import { URL } from "../../env";
 
 export type FrameworkFixtures = {
@@ -7,6 +7,7 @@ export type FrameworkFixtures = {
   signUpPage: SignUpPage;
   profilePage: ProfilePage;
   settingsPage: SettingsPage;
+  navBarPage: NavBarPage;
   homePage: Homepage;
   baseUrl: string;
 };
@@ -27,7 +28,9 @@ export const test = base.extend<FrameworkFixtures>({
     settingsPage: async ({ page }, use) => {
     await use(new SettingsPage(page));
   },
-
+    navBarPage: async ({ page }, use) => {
+    await use(new NavBarPage(page));
+  },
 
   // articlePage: async ({ page }, use) => {
   //   await use(new ArticlePage(page));
