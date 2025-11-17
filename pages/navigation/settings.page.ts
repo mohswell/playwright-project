@@ -1,29 +1,15 @@
 import { Page, Locator, expect } from "@playwright/test";
-
+import { BasePage } from "../base.page";
+import { USER_NAME } from "../../env";
 /**
  * This is the page object for the Settings functionality.
  * @export
  * @class SettingsPage
  * @typedef {SettingsPage}
  */
-export class SettingsPage {
-  constructor(private page: Page) {}
-
-  get navigation(): {
-    settingsButton: Locator;
-    settingsPageTitle: Locator;
-    defaultPageHeading: Locator;
-  } {
-    return {
-      settingsButton: this.page.getByRole("link", {
-        name: "Settings",
-        exact: true,
-      }),
-      settingsPageTitle: this.page.getByRole("heading", {
-        name: "Your Settings",
-      }),
-      defaultPageHeading: this.page.getByRole("heading", { name: "conduit" }),
-    };
+export class SettingsPage extends BasePage {
+  constructor(page: Page) {
+    super(page);
   }
 
   /** Form inputs */
@@ -63,7 +49,7 @@ export class SettingsPage {
    */
   async assertUsernameValue(): Promise<void> {
     const usernameValue = await this.form.username.inputValue();
-    expect(usernameValue).toBe(process.env.USERNAME!);
+    expect(usernameValue).toBe(USER_NAME);
   }
 
   /**
@@ -72,6 +58,7 @@ export class SettingsPage {
    */
   async assertPasswordValue(): Promise<void> {
     const passwordValue = await this.form.password.inputValue();
+    // password is stored in env; keep existing behavior
     expect(passwordValue).toBe(process.env.PASSWORD!);
   }
 
@@ -80,11 +67,10 @@ export class SettingsPage {
    * @returns {Promise<void>} Resolves when navigation is complete.
    */
   async logOut(): Promise<void> {
-    await this.navigation.settingsButton.click();
-    await expect(this.navigation.settingsPageTitle).toBeVisible();
-
+    await this.settingsButton.click();
+    await expect(this.settingsPageTitle).toBeVisible();
     await this.actions.logout.click();
-    await expect(this.navigation.defaultPageHeading).toBeVisible();
+    await expect(this.defaultPageHeading).toBeVisible();
   }
 
   /**
@@ -94,8 +80,8 @@ export class SettingsPage {
    * @param {string} params.bio - The new bio.
    */
   async updateSettings(params: { profilePictureUrl?: string, bio?: string }): Promise<void> {
-    await this.navigation.settingsButton.click();
-    await expect(this.navigation.settingsPageTitle).toBeVisible();
+    await this.settingsButton.click();
+    await expect(this.settingsPageTitle).toBeVisible();
     if (params.profilePictureUrl) {
       await this.form.profilePictureUrl.fill(params.profilePictureUrl);
     }
