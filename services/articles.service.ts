@@ -10,7 +10,7 @@ import { APIClient, ApiResponse } from "./api.service";
 export class ArticleService {
   constructor(private client: APIClient) {}
 
-  list(query?: ArticlesQuery): Promise<ApiResponse<ArticlesListResponse>> {
+  fetch(query?: ArticlesQuery): Promise<ApiResponse<ArticlesListResponse>> {
     return this.client.get(apiEndpoints.articles.list, query);
   }
 
