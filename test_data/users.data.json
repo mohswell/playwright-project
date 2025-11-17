@@ -1,0 +1,19 @@
+{
+  "invalidEmails": [
+    "fakeemail@gmail.com",
+    "@missingusername.com",
+    "username@.com",
+    "username@domain..com",
+    "username@domain,com",
+    "username@domain@domain.com",
+    "username@domain"
+  ],
+  "invalidPasswords": [
+    "123",
+    "yourm0m",
+    "verylongpassword21characters",
+    "",
+    "     "
+  ],
+  "invalidUsernames": ["", "us", "verylongpassword21characters"]
+}
