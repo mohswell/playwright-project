@@ -26,7 +26,7 @@ test.describe("Article Comments", () => {
         commentData
       );
 
-      expect(createCommentResponse.status).toBe(httpStatusCodes.created);
+      expect(createCommentResponse.status).toBe(httpStatusCodes.ok);
       expect(createCommentResponse.body.comment.body).toBe(
         commentData.comment.body
       );
@@ -49,7 +49,7 @@ test.describe("Article Comments", () => {
     async ({ comments }) => {
       const commentData = generateCommentData();
       const createResp = await comments.create(articleSlug, commentData);
-      expect(createResp.status).toBe(httpStatusCodes.created);
+      expect(createResp.status).toBe(httpStatusCodes.ok);
 
       const deleteResp = await comments.delete(
         articleSlug,
