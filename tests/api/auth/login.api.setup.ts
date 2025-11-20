@@ -1,43 +1,39 @@
-import { EMAIL, PASSWORD } from "../../../env";
-import { expect, test } from "../../../fixtures";
-import { httpStatusCodes, isError } from "../../../helpers/utils";
-import invalidCredentials from "../../../test_data/users.data.json";
+import { EMAIL, PASSWORD } from '@/env';
+import invalidCredentials from '@/test_data/users.data.json';
+import { httpStatusCodes, isError } from '@/helpers/utils';
+import { expect, test } from '@/fixtures';
 
-test.describe("Authentication Setup", () => {
-  test(
-    "User can login successfully",
-    { tag: "@API" },
-    async ({ auth, api }) => {
-      const loginResponse = await auth.login({
-        user: { email: EMAIL, password: PASSWORD },
-      });
+test.describe('Authentication Setup', () => {
+    test('User can login successfully', { tag: '@API' }, async ({ auth }) => {
+        const loginResponse = await auth.login({
+            user: { email: EMAIL, password: PASSWORD },
+        });
 
-      expect(loginResponse.body.user.token).toBeTruthy();
-      expect(loginResponse.status).toBe(httpStatusCodes.ok);
-    }
-  );
+        expect(loginResponse.body.user.token).toBeTruthy();
+        expect(loginResponse.status).toBe(httpStatusCodes.ok);
+    });
 
-  test(
-    "Displays login error message for incorrect email or password",
-    { tag: "@API" },
-    async ({ auth }) => {
-      const invalidLoginResponse = await auth.login({
-        user: {
-          email: invalidCredentials.invalidEmails[0],
-          password: invalidCredentials.invalidPasswords[0],
-        },
-      });
+    test(
+        'Displays login error message for incorrect email or password',
+        { tag: '@API' },
+        async ({ auth }) => {
+            const invalidLoginResponse = await auth.login({
+                user: {
+                    email: invalidCredentials.invalidEmails[0],
+                    password: invalidCredentials.invalidPasswords[0],
+                },
+            });
 
-      expect(invalidLoginResponse.status).toBe(httpStatusCodes.forbidden);
-      expect(invalidLoginResponse.ok).toBe(false);
-      expect(isError(invalidLoginResponse)).toBe(true);
+            expect(invalidLoginResponse.status).toBe(httpStatusCodes.forbidden);
+            expect(invalidLoginResponse.ok).toBe(false);
+            expect(isError(invalidLoginResponse)).toBe(true);
 
-      expect(invalidLoginResponse.body.errors["email or password"][0]).toBe(
-        "is invalid"
-      );
-      // expect body to be error: {"errors":{"email or password":["is invalid"]}}
-    }
-  );
+            expect(
+                invalidLoginResponse.body.errors['email or password'][0]
+            ).toBe('is invalid');
+            // expect body to be error: {"errors":{"email or password":["is invalid"]}}
+        }
+    );
 });
 // TODO: ADD SIGNUP IN ANOTHER FILE
 // test.describe("Verify API Validation for Log In / Sign Up", () => {
