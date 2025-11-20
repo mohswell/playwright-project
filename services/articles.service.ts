@@ -16,7 +16,7 @@ export class ArticleService {
 
   show(slug: string): Promise<ApiResponse<{ article: Article }>> {
     return this.client.get(apiEndpoints.articles.detail(slug));
-}
+  }
 
   update(
     slug: string,

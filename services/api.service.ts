@@ -12,7 +12,7 @@ export interface ApiResponse<T> {
 }
 
 export const API_TOKEN = assertValue(
-  process.env.API_TOKEN,
+  process.env.API_TOKEN!,
   "Missing environment variable: API_TOKEN"
 );
 
