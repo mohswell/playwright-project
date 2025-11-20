@@ -26,7 +26,7 @@ export class ArticleService {
   }
 
   create(data: ArticleRequest): Promise<ApiResponse<{ article: Article }>> {
-    return this.client.post(apiEndpoints.articles.list, data);
+    return this.client.post(apiEndpoints.articles.create, data);
   }
 
   delete(slug: string): Promise<ApiResponse<{}>> {
