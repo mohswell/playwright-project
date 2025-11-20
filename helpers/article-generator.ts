@@ -1,23 +1,18 @@
+import { faker } from "@faker-js/faker";
 import type { ArticleRequest } from "../types/schema";
-import ArticleDataJson from "../test_data/articles.data.json";
 
 /**
- * Generate an ArticleRequest payload using only the required fields.
+ * Generate a unique ArticleRequest payload for tests.
  */
 export function generateArticleData(): ArticleRequest {
-  const json = ArticleDataJson as {
-    title: string;
-    description: string;
-    body: string;
-    tagList: string[];
-  };
-
   return {
     article: {
-      title: json.title,
-      description: json.description,
-      body: json.body,
-      tagList: json.tagList,
+      title: `${faker.string.alphanumeric({ length: 8 })} - ${faker.lorem.words(
+        2
+      )}`,
+      description: faker.lorem.sentence(),
+      body: faker.lorem.paragraph(),
+      tagList: [faker.lorem.word(), faker.lorem.word(), faker.lorem.word()],
     },
   };
 }

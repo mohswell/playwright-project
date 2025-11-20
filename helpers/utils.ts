@@ -33,6 +33,7 @@ export const apiEndpoints = {
   },
   articles: {
     list: "/articles",
+    create: "/articles",
     detail: (slug: string) => `/articles/${slug}`,
     comments: (slug: string) => `/articles/${slug}/comments`,
     commentsDetail: (slug: string, commentId: number) =>
