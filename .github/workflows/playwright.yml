@@ -1,27 +1,140 @@
-name: Playwright Tests
+name: Playwright Tests on Custom Runner Extended
+
 on:
-  push:
-    branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
+    push:
+        branches: [main, master]
+    pull_request:
+        branches: [main, master]
+    workflow_dispatch:
+
+env:
+    URL: ${{ secrets.URL }}
+    API_URL: ${{ secrets.API_URL }}
+    USER_NAME: ${{ secrets.USER_NAME }}
+    EMAIL: ${{ secrets.EMAIL }}
+    PASSWORD: ${{ secrets.PASSWORD }}
+
+permissions:
+    contents: read
+    pages: write
+    id-token: write
+
+concurrency:
+    group: 'pages'
+    cancel-in-progress: false
+
 jobs:
-  test:
-    timeout-minutes: 60
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-node@v4
-      with:
-        node-version: lts/*
-    - name: Install dependencies
-      run: npm ci
-    - name: Install Playwright Browsers
-      run: npx playwright install --with-deps
-    - name: Run Playwright tests
-      run: npx playwright test
-    - uses: actions/upload-artifact@v4
-      if: ${{ !cancelled() }}
-      with:
-        name: playwright-report
-        path: playwright-report/
-        retention-days: 30
+    setup-and-smoke-test:
+        name: Setup and Smoke Test
+        timeout-minutes: 60
+        runs-on: ubuntu-latest
+        outputs:
+            smoke_outcome: ${{ steps.smoke.outcome }}
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Playwright Setup on Runner
+              uses: ./.github/actions/playwright-setup
+
+            - name: Run Smoke tests
+              id: smoke
+              run: npm run test:smoke
+
+            - name: Upload Playwright Report
+              if: always()
+              uses: ./.github/actions/playwright-report
+              with:
+                  test-step-outcome: ${{ steps.smoke.outcome }}
+
+    api-test:
+        name: API Test
+        needs: setup-and-smoke-test
+        timeout-minutes: 60
+        runs-on: ubuntu-latest
+        outputs:
+            api_outcome: ${{ steps.api.outcome }}
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Playwright Setup on Runner
+              uses: ./.github/actions/playwright-setup
+
+            - name: Run API tests
+              id: api
+              run: npm run test:api
+
+            - name: Upload Playwright Report
+              if: always()
+              uses: ./.github/actions/playwright-report
+              with:
+                  test-step-outcome: ${{ steps.api.outcome }}
+
+    merge-report:
+        name: Merge Report
+        if: always()
+        needs: [setup-and-smoke-test, api-test]
+        timeout-minutes: 60
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: lts/*
+
+            - name: Install Dependencies
+              run: npm ci
+
+            - name: Download blob reports from GitHub Actions Artifacts
+              uses: actions/download-artifact@v4
+              with:
+                  path: all-blob-reports
+                  pattern: blob-report-*
+                  merge-multiple: true
+
+            - name: Merge into HTML Report
+              run: npx playwright merge-reports --reporter html ./all-blob-reports
+
+            - name: Upload HTML report
+              uses: actions/upload-artifact@v4
+              with:
+                  name: Merged HTML Reports
+                  path: playwright-report
+                  retention-days: 3
+
+    build-report:
+        name: Build Report
+        if: always()
+        needs: merge-report
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Download Merged HTML Reports
+              uses: actions/download-artifact@v4
+              with:
+                  name: Merged HTML Reports
+                  path: ./_site
+
+            - name: Upload artifact
+              uses: actions/upload-pages-artifact@v3
+              with:
+                  path: ./_site
+
+    deploy-report:
+        name: Deploy Report
+        if: always()
+        needs: build-report
+        environment:
+            name: github-pages
+            url: 'https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/'
+        runs-on: ubuntu-latest
+        steps:
+            - name: Deploy to GitHub Pages
+              id: deployment
+              uses: actions/deploy-pages@v4
