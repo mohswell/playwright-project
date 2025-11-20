@@ -1,5 +1,9 @@
-import { APIRequestContext, APIResponse as PlaywrightAPIResponse } from "@playwright/test";
+import {
+  APIRequestContext,
+  APIResponse as PlaywrightAPIResponse,
+} from "@playwright/test";
 import { HEADER } from "../types/constants";
+import { assertValue } from "../helpers/utils";
 
 export interface ApiResponse<T> {
   status: number;
@@ -7,25 +11,25 @@ export interface ApiResponse<T> {
   body: T | any;
 }
 
+export const API_TOKEN = assertValue(
+  process.env.API_TOKEN,
+  "Missing environment variable: API_TOKEN"
+);
+
 export class APIClient {
   private request: APIRequestContext;
   private baseUrl: string;
   private token?: string;
-
   constructor(request: APIRequestContext, baseUrl: string, token?: string) {
     this.request = request;
     this.baseUrl = baseUrl;
-    this.token = token;
-  }
-
-  setAuthToken(token: string) {
-    this.token = token;
+    this.token = token || API_TOKEN;
   }
 
   private buildHeaders(extra?: Record<string, string>) {
     return {
       "Content-Type": HEADER.CONTENT_TYPE,
-      ...(this.token ? { Authorization: `Token ${this.token}` } : {}),
+      Authorization: `Token ${this.token}`,
       ...extra,
     };
   }
@@ -41,7 +45,10 @@ export class APIClient {
     };
   }
 
-   async get<T>(url: string, params?: Record<string, any>): Promise<ApiResponse<T>> {
+  async get<T>(
+    url: string,
+    params?: Record<string, any>
+  ): Promise<ApiResponse<T>> {
     const response = await this.request.get(`${this.baseUrl}${url}`, {
       headers: this.buildHeaders(),
       params,
