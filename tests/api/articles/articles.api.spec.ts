@@ -1,5 +1,5 @@
 import { expect, test } from "../../../fixtures";
-import { generateArticleData } from "../../../helpers/article-generator";
+import { generateArticleData } from "../../../helpers/faker";
 import { httpStatusCodes } from "../../../helpers/utils";
 import { ArticleRequest } from "../../../types/schema";
 
