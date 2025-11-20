@@ -14,8 +14,15 @@ export class ArticleService {
     return this.client.get(apiEndpoints.articles.list, query);
   }
 
-  detail(slug: string): Promise<ApiResponse<{ article: Article }>> {
+  show(slug: string): Promise<ApiResponse<{ article: Article }>> {
     return this.client.get(apiEndpoints.articles.detail(slug));
+}
+
+  update(
+    slug: string,
+    data: ArticleRequest
+  ): Promise<ApiResponse<{ article: Article }>> {
+    return this.client.put(apiEndpoints.articles.detail(slug), data);
   }
 
   create(data: ArticleRequest): Promise<ApiResponse<{ article: Article }>> {
