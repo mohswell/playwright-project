@@ -34,5 +34,11 @@
   "dependencies": {
     "dotenv": "^17.2.3",
     "zod": "^4.1.12"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx}": [
+      "npx eslint --fix",
+      "npx prettier --write"
+    ]
   }
 }
