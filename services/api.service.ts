@@ -4,7 +4,7 @@ import { HEADER } from "../types/constants";
 export interface ApiResponse<T> {
   status: number;
   ok: boolean;
-  body: T;
+  body: T | any;
 }
 
 export class APIClient {
