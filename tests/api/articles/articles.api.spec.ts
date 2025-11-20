@@ -21,14 +21,24 @@ test.describe("Articles", () => {
       const articleData = await generateArticleData();
       const articleResponse = await articles.create(articleData);
 
-      expect(articleResponse.body.article.title).toBe(articleData.article.title);
       expect(articleResponse.status).toBe(httpStatusCodes.created);
+      expect(articleResponse.body.article.title).toBe(
+        articleData.article.title
+      );
     }
   );
 
-  test('Users Can update articles',{tag:'@API'}, async ({  
-    articles
-  }) => {
+  test("Users can update articles", { tag: "@API" }, async ({ articles }) => {
+    const articleData = await generateArticleData();
+    const createResponse = await articles.create(articleData);
 
-  });  
+    const updatedData = { ...articleData, article: { title: "Updated Title" } };
+    const updateResponse = await articles.update(
+      createResponse.body.article.slug,
+      updatedData
+    );
+
+    expect(updateResponse.status).toBe(httpStatusCodes.ok);
+    expect(updateResponse.body.article.title).toBe("Updated Title");
+  });
 });
