@@ -8,3 +8,5 @@ export const HEADER= {
 
 
 export const STORAGE_PATH = ".auth/userSession.json";
+
+export const AUTH_TOKEN_PATH = ".auth/authToken";

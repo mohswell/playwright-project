@@ -150,3 +150,7 @@ export interface favoriteArticleRequest {}
 export interface favoriteArticleResponse {
   article: Article;
 }
+
+export interface ApiErrorResponse {
+  errors: Record<string, string[]>;
+}
