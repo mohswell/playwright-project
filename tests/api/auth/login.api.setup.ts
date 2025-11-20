@@ -14,9 +14,6 @@ test.describe("Authentication Setup", () => {
 
       expect(loginResponse.body.user.token).toBeTruthy();
       expect(loginResponse.status).toBe(httpStatusCodes.ok);
-
-      // Set the token on the API client so other services can use it
-      api.setAuthToken(loginResponse.body.user.token);
     }
   );
 
@@ -35,7 +32,9 @@ test.describe("Authentication Setup", () => {
       expect(invalidLoginResponse.ok).toBe(false);
       expect(isError(invalidLoginResponse)).toBe(true);
 
-      expect(invalidLoginResponse.body.errors["email or password"][0]).toBe("is invalid");
+      expect(invalidLoginResponse.body.errors["email or password"][0]).toBe(
+        "is invalid"
+      );
       // expect body to be error: {"errors":{"email or password":["is invalid"]}}
     }
   );
