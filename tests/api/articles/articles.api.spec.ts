@@ -1,44 +1,49 @@
 import { expect, test } from "../../../fixtures";
 import { generateArticleData } from "../../../helpers/article-generator";
 import { httpStatusCodes } from "../../../helpers/utils";
+import { ArticleRequest } from "../../../types/schema";
 
 test.describe("Articles", () => {
-  test(
-    "User can access articles successfully",
-    { tag: "@API" },
-    async ({ articles }) => {
-      const articleResponse = await articles.fetch();
+  let createdArticle: { slug: string; title: string };
 
-      expect(articleResponse.body.articles.length).toBeGreaterThan(0); //toBeTruthy() also works
-      expect(articleResponse.status).toBe(httpStatusCodes.ok);
-    }
-  );
-
-  test(
-    "User can create articles successfully",
-    { tag: "@API" },
-    async ({ articles }) => {
-      const articleData = await generateArticleData();
-      const articleResponse = await articles.create(articleData);
-
-      expect(articleResponse.status).toBe(httpStatusCodes.created);
-      expect(articleResponse.body.article.title).toBe(
-        articleData.article.title
-      );
-    }
-  );
-
-  test("Users can update articles", { tag: "@API" }, async ({ articles }) => {
-    const articleData = await generateArticleData();
+  // Runs before each test to create a new article
+  test.beforeEach(async ({ articles }) => {
+    const articleData = generateArticleData();
     const createResponse = await articles.create(articleData);
 
-    const updatedData = { ...articleData, article: { title: "Updated Title" } };
+    expect(createResponse.status).toBe(httpStatusCodes.created);
+    createdArticle = createResponse.body.article;
+  });
+
+  test("User can access articles successfully", async ({ articles }) => {
+    const articleResponse = await articles.fetch();
+
+    expect(articleResponse.body.articles.length).toBeGreaterThan(0);
+    expect(articleResponse.status).toBe(httpStatusCodes.ok);
+  });
+
+  test("User can update articles successfully", async ({ articles }) => {    
+    const newTitle = `Updated - ${Date.now()}`;
+
+    const updatedData: ArticleRequest = {
+      article: {
+        ...createdArticle,
+        title: newTitle,
+      },
+    };
+
     const updateResponse = await articles.update(
-      createResponse.body.article.slug,
+      createdArticle.slug,
       updatedData
     );
 
     expect(updateResponse.status).toBe(httpStatusCodes.ok);
-    expect(updateResponse.body.article.title).toBe("Updated Title");
+    expect(updateResponse.body.article.title).toBe(newTitle);
+  });
+
+  test("User can delete articles successfully", async ({ articles }) => {
+    const deleteResponse = await articles.delete(createdArticle.slug);
+    
+    expect(deleteResponse.status).toBe(httpStatusCodes.noContent);
   });
 });
