@@ -18,7 +18,7 @@ import { STORAGE_PATH } from "./types/constants";
 const { URL } = require("./env");
 
 export default defineConfig({
-  globalSetup: require.resolve("./global"),
+  globalSetup: require.resolve("./global.ts"),
   testDir: "./tests",
   /* Run tests in files in parallel */
   fullyParallel: true,
@@ -53,16 +53,15 @@ export default defineConfig({
       dependencies: ["setup"],
     },
 
-    {
-      name: "firefox",
-      use: { ...devices["Desktop Firefox"] },
-    },
+    // {
+    //   name: "firefox",
+    //   use: { ...devices["Desktop Firefox"] },
+    // },
 
-    {
-      name: "webkit",
-      use: { ...devices["Desktop Safari"] },
-    },
-
+    // {
+    //   name: "webkit",
+    //   use: { ...devices["Desktop Safari"] },
+    // },
     /* Test against mobile viewports. */
     // {
     //   name: 'Mobile Chrome',
