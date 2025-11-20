@@ -3,6 +3,8 @@
  */
 
 import { API_URL, URL } from "../env";
+import { ApiResponse } from "../services/api.service";
+import { ApiErrorResponse } from "../types/schema";
 
 export function assertValue<T>(v: T | undefined, errorMessage: string): T {
   if (v === undefined) {
@@ -10,6 +12,18 @@ export function assertValue<T>(v: T | undefined, errorMessage: string): T {
   }
 
   return v;
+}
+
+export function isError<T extends object>(
+  res: ApiResponse<T>
+): res is ApiResponse<ApiErrorResponse> {
+  return "errors" in res.body;
+}
+
+export function isSuccess<T extends object>(
+  res: ApiResponse<T>
+): res is ApiResponse<T> {
+  return !("errors" in res.body);
 }
 
 export const apiEndpoints = {
@@ -21,7 +35,8 @@ export const apiEndpoints = {
     list: "/articles",
     detail: (slug: string) => `/articles/${slug}`,
     comments: (slug: string) => `/articles/${slug}/comments`,
-    commentsDetail: (slug: string, commentId: number) => `/articles/${slug}/comments/${commentId}`,
+    commentsDetail: (slug: string, commentId: number) =>
+      `/articles/${slug}/comments/${commentId}`,
     favorite: (slug: string) => `/articles/${slug}/favorite`,
     feed: "/articles/feed",
   },
@@ -58,34 +73,32 @@ export const apiPath = {
   comments: "/comments",
 };
 
-
 export const environmentBaseUrls = {
-    ci: {
-      prefix: API_URL,
-      suffix: '.com',
-    },
-    local: {
-      api: API_URL,
-      home: URL,
-    },
-    production: {
-      api: API_URL,
-      home: URL,
-    },
-    staging: {
-      api: API_URL,
-      home: URL,
-    },
+  ci: {
+    prefix: API_URL,
+    suffix: ".com",
+  },
+  local: {
+    api: API_URL,
+    home: URL,
+  },
+  production: {
+    api: API_URL,
+    home: URL,
+  },
+  staging: {
+    api: API_URL,
+    home: URL,
+  },
 };
-  
 
 export const uiPages = {
-    home: "/",
-    signIn: "/login",   
-    signUp: "/register",
-    settings: "/settings",
-    profile: (username: string) => `/profile/${username}`,
-    favorites: (username: string) => `/profile/${username}/favorites`,
-    articleDetail: (slug: string) => `/article/${slug}`,
-    articleCreate: "/editor",
+  home: "/",
+  signIn: "/login",
+  signUp: "/register",
+  settings: "/settings",
+  profile: (username: string) => `/profile/${username}`,
+  favorites: (username: string) => `/profile/${username}/favorites`,
+  articleDetail: (slug: string) => `/article/${slug}`,
+  articleCreate: "/editor",
 };
