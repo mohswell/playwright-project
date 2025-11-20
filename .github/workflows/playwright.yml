@@ -1,4 +1,4 @@
-name: Playwright Tests on Custom Runner Extended
+name: Playwright Tests
 
 on:
     push:
@@ -46,6 +46,7 @@ jobs:
               uses: ./.github/actions/playwright-report
               with:
                   test-step-outcome: ${{ steps.smoke.outcome }}
+                  blob-report-upload: 'true'
 
     api-test:
         name: API Test
@@ -70,6 +71,7 @@ jobs:
               uses: ./.github/actions/playwright-report
               with:
                   test-step-outcome: ${{ steps.api.outcome }}
+                  blob-report-upload: 'true'
 
     merge-report:
         name: Merge Report
@@ -95,6 +97,16 @@ jobs:
                   path: all-blob-reports
                   pattern: blob-report-*
                   merge-multiple: true
+
+            - name: Check if blob reports exist
+              run: |
+                  if [ ! -d "./all-blob-reports" ] || [ -z "$(ls -A ./all-blob-reports)" ]; then
+                      echo "No blob reports found. Creating empty directory and generating a default report."
+                      mkdir -p ./all-blob-reports
+                      mkdir -p ./playwright-report
+                      echo '<html><body><h1>No test reports available</h1><p>No blob reports were generated or uploaded.</p></body></html>' > ./playwright-report/index.html
+                      exit 0
+                  fi
 
             - name: Merge into HTML Report
               run: npx playwright merge-reports --reporter html ./all-blob-reports
