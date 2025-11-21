@@ -12,13 +12,13 @@ test.describe("Navigation functionality", () => {
   );
 
   test("Clicking 'Sign in' opens the Sign In page", { tag: "@Smoke" }, async ({ navBarPage }) => {
-    await navBarPage.navigateToSignInPage();
+    await navBarPage.navigateToSignIn();
     // verify sign in heading visible
     await expect(navBarPage.signInPageTitle).toBeVisible();
   });
 
   test("Clicking 'Sign up' opens the Sign Up page", { tag: "@Smoke" }, async ({ navBarPage }) => {
-    await navBarPage.navigateToSignUpPage();
+    await navBarPage.navigateToSignUp();
     await expect(navBarPage.signUpPageTitle).toBeVisible();
   });
 

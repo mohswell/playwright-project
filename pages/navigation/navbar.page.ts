@@ -48,7 +48,7 @@ export class NavBarPage extends BasePage {
    * Navigates to the Sign In page.
    * @returns {Promise<void>} Resolves when navigation is complete.
    */
-  async navigateToSignInPage(): Promise<void> {
+  async navigateToSignIn(): Promise<void> {
     await super.navigateToSignInPage();
   }
 
@@ -56,7 +56,7 @@ export class NavBarPage extends BasePage {
    * Navigates to the Sign Up page.
    * @returns {Promise<void>} Resolves when navigation is complete.
    */
-  async navigateToSignUpPage(): Promise<void> {
+  async navigateToSignUp(): Promise<void> {
     await super.navigateToSignUpPage();
   }
 
