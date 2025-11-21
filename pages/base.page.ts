@@ -37,6 +37,13 @@ export class BasePage {
   get profileIcon(): Locator {
     return this.page.getByRole("link", { name: USER_NAME });
   }
+  
+  get editProfileSettingsButton(): Locator {
+    return this.page.getByRole("link", {
+      name: "Edit Profile Settings",
+      exact: true,
+    });
+  }
 
   // Page headings
   get homePageHeading(): Locator {
