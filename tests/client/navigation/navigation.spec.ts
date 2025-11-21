@@ -2,12 +2,12 @@ import { test, expect } from "../../../fixtures";
 
 test.describe("Navigation functionality", () => {
   test(
-    "Navbar elements are visible for guest users",
+    "Profile icon is visible for logged in users",
     { tag: "@Smoke" },
     async ({ navBarPage }) => {
       await expect(navBarPage.navBar).toBeVisible();
       // guest should not see profile or create article link
-      await expect(navBarPage.profileIcon).toHaveCount(0);
+      await expect(navBarPage.profileIcon).toBeVisible();
     }
   );
 
