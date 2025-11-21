@@ -1,4 +1,4 @@
-import { test as base } from "@playwright/test";
+import { test as base, expect } from "@playwright/test";
 import { SignInPage, SignUpPage, ProfilePage, SettingsPage, Homepage, NavBarPage } from "../../pages";
 import { URL } from "../../env";
 
@@ -42,4 +42,4 @@ export const test = base.extend<FrameworkFixtures>({
   },
 });
 
-export { expect } from "@playwright/test";
+export { expect };

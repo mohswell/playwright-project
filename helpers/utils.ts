@@ -2,9 +2,13 @@
  * Utility functions for various helper methods.
  */
 
+import { Page } from "@playwright/test";
 import { API_URL, URL } from "../env";
 import { ApiResponse } from "../services/api.service";
 import { ApiErrorResponse } from "../types/schema";
+
+import fs from 'fs';
+import path from 'path';
 
 export function assertValue<T>(v: T | undefined, errorMessage: string): T {
   if (v === undefined) {
@@ -25,6 +29,16 @@ export function isSuccess<T extends object>(
 ): res is ApiResponse<T> {
   return !("errors" in res.body);
 }
+
+
+export async function saveStorageState(page: Page, storagePath: string) {
+    const dir = path.dirname(storagePath);
+    if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true });
+    }
+    await page.context().storageState({ path: storagePath });
+}
+
 
 export const apiEndpoints = {
   auth: {

@@ -27,3 +27,23 @@ export function generateCommentData() {
     },
   };
 }
+
+
+/**
+ * Generate a unique User Image URL payload for tests.
+ */
+export function generateUserImage() {
+  return {
+    profilePictureUrl: faker.image.avatar()
+  }
+}
+
+
+/**
+ * Generate a unique User Biography for tests.
+ */
+export function generateUserBio() {
+  return {
+    bio: faker.lorem.sentence()
+  }
+}

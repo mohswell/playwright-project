@@ -11,7 +11,7 @@
     "test:ui": "npx playwright test --project=chromium --ui",
     "test:smoke": "npx playwright test --grep @Smoke --project=chromium",
     "test:sanity": "npx playwright test --grep @Sanity --project=chromium",
-    "test:api": "npx playwright test --grep @API --project=chromium",
+    "test:api": "npx playwright test --grep @API",
     "test:regression": "npx playwright test --grep @Regression --project=chromium",
     "test:e2e": "npx playwright test"
   },
@@ -26,6 +26,7 @@
     "@typescript-eslint/eslint-plugin": "^8.47.0",
     "@typescript-eslint/parser": "^8.47.0",
     "eslint": "^9.39.1",
+    "jiti": "^1.16.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-playwright": "^2.3.0",
     "eslint-plugin-prettier": "^5.5.4",
@@ -33,6 +34,7 @@
   },
   "dependencies": {
     "dotenv": "^17.2.3",
+    "typescript": "^5.9.3",
     "zod": "^4.1.12"
   },
   "lint-staged": {

@@ -1,3 +1,4 @@
+import { articleCommentResponse } from "@/types/schema";
 import { test, expect } from "../../../fixtures";
 import {
   generateCommentData,
@@ -48,19 +49,18 @@ test.describe("Article Comments", () => {
     { tag: "@API" },
     async ({ comments }) => {
       const commentData = generateCommentData();
-      const createResp = await comments.create(articleSlug, commentData);
-      expect(createResp.status).toBe(httpStatusCodes.ok);
+      const createCommentResponse = await comments.create(articleSlug, commentData);
+      expect(createCommentResponse.status).toBe(httpStatusCodes.ok);
 
-      const deleteResp = await comments.delete(
+      const deleteCommentResponse = await comments.delete(
         articleSlug,
-        createResp.body.comment.id
+        createCommentResponse.body.comment.id
       );
-      expect(deleteResp.status).toBe(httpStatusCodes.ok);
-
+      expect(deleteCommentResponse.status).toBe(httpStatusCodes.ok);
       // Optional: verify comment no longer exists
       const fetchResp = await comments.fetch(articleSlug);
       expect(
-        fetchResp.body.comments.some((c) => c.id === createResp.body.comment.id)
+        fetchResp.body.comments.some((c: articleCommentResponse) => c.comment.id === createCommentResponse.body.comment.id)
       ).toBe(false);
     }
   );

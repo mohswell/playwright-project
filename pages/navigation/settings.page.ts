@@ -1,6 +1,6 @@
 import { Page, Locator, expect } from "@playwright/test";
 import { BasePage } from "../base.page";
-import { USER_NAME } from "../../env";
+import { EMAIL, PASSWORD, USER_NAME } from "../../env";
 /**
  * This is the page object for the Settings functionality.
  * @export
@@ -49,7 +49,7 @@ export class SettingsPage extends BasePage {
    */
   async assertUsernameValue(): Promise<void> {
     const usernameValue = await this.form.username.inputValue();
-    expect(usernameValue).toBe(USER_NAME);
+    expect(usernameValue).toBe( USER_NAME!);
   }
 
   /**
@@ -59,7 +59,7 @@ export class SettingsPage extends BasePage {
   async assertPasswordValue(): Promise<void> {
     const passwordValue = await this.form.password.inputValue();
     // password is stored in env; keep existing behavior
-    expect(passwordValue).toBe(process.env.PASSWORD!);
+    expect(passwordValue).toBe(PASSWORD!);
   }
 
   /**
@@ -67,7 +67,7 @@ export class SettingsPage extends BasePage {
    * @returns {Promise<void>} Resolves when navigation is complete.
    */
   async logOut(): Promise<void> {
-    await this.settingsButton.click();
+    await super.settingsButton.click();
     await expect(this.settingsPageTitle).toBeVisible();
     await this.actions.logout.click();
     await expect(this.defaultPageHeading).toBeVisible();
@@ -80,14 +80,19 @@ export class SettingsPage extends BasePage {
    * @param {string} params.bio - The new bio.
    */
   async updateSettings(params: { profilePictureUrl?: string, bio?: string }): Promise<void> {
-    await this.settingsButton.click();
-    await expect(this.settingsPageTitle).toBeVisible();
+    await super.settingsButton.click();
     if (params.profilePictureUrl) {
       await this.form.profilePictureUrl.fill(params.profilePictureUrl);
     }
     if (params.bio) {
       await this.form.bio.fill(params.bio);
     }
+    await this.form.username.fill(USER_NAME!);
+    await this.form.email.fill(EMAIL!);
     await this.actions.saveSettings.click();
+  }
+
+  async assertSettingsUpdated(): Promise<void> {
+    await expect(this.settingsPageTitle).toBeVisible();
   }
 }
