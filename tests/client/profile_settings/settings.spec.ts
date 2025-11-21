@@ -20,5 +20,5 @@ test.describe('Settings Functionality', () => {
     await settingsPage.assertSettingsUpdated();
   });
 
-}
+});
 
