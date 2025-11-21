@@ -11,18 +11,18 @@ test.describe("Navigation functionality", () => {
     }
   );
 
-  test("Clicking 'Sign in' opens the Sign In page", async ({ navBarPage }) => {
+  test("Clicking 'Sign in' opens the Sign In page", { tag: "@Smoke" }, async ({ navBarPage }) => {
     await navBarPage.navigateToSignInPage();
     // verify sign in heading visible
     await expect(navBarPage.signInPageTitle).toBeVisible();
   });
 
-  test("Clicking 'Sign up' opens the Sign Up page", async ({ navBarPage }) => {
+  test("Clicking 'Sign up' opens the Sign Up page", { tag: "@Smoke" }, async ({ navBarPage }) => {
     await navBarPage.navigateToSignUpPage();
     await expect(navBarPage.signUpPageTitle).toBeVisible();
   });
 
-  test("Clicking conduit icon navigates home", async ({ navBarPage }) => {
+  test("Clicking conduit icon navigates home", { tag: "@Smoke" }, async ({ navBarPage }) => {
     await navBarPage.navigateToSignInPage();
     await navBarPage.navigateToHomePageByIcon();
     await expect(navBarPage.homePageHeading).toBeVisible();
