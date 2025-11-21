@@ -30,7 +30,7 @@ export function generateCommentData() {
 
 
 /**
- * Generate a unique User Image Ul payload for tests.
+ * Generate a unique User Image URL payload for tests.
  */
 export function generateUserImage() {
   return {
