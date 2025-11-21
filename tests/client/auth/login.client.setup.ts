@@ -1,7 +1,7 @@
 import { saveStorageState } from '@/helpers/utils';
-import { EMAIL, PASSWORD } from '../../../env';
-import { test } from '../../../fixtures';
-import { STORAGE_PATH } from '../../../types/constants';
+import { EMAIL, PASSWORD } from '@/env';
+import { test } from '@/fixtures';
+import { STORAGE_PATH } from '@/types/constants';
 
 test.describe('Sign In Functionality', () => {
     test(
