@@ -67,7 +67,7 @@ export class SettingsPage extends BasePage {
    * @returns {Promise<void>} Resolves when navigation is complete.
    */
   async logOut(): Promise<void> {
-    await this.settingsButton.click();
+    await super.settingsButton.click();
     await expect(this.settingsPageTitle).toBeVisible();
     await this.actions.logout.click();
     await expect(this.defaultPageHeading).toBeVisible();
@@ -80,7 +80,7 @@ export class SettingsPage extends BasePage {
    * @param {string} params.bio - The new bio.
    */
   async updateSettings(params: { profilePictureUrl?: string, bio?: string }): Promise<void> {
-    await this.settingsButton.click();
+    await super.settingsButton.click();
     if (params.profilePictureUrl) {
       await this.form.profilePictureUrl.fill(params.profilePictureUrl);
     }
