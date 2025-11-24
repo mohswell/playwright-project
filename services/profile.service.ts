@@ -1,6 +1,6 @@
 import { APIClient, ApiResponse } from './api.service';
 import { apiEndpoints } from '../helpers/utils';
-import { profileResponse } from '../types/schema';
+import { profileResponse, userRequest, userResponse } from '../types/schema';
 
 export class ProfileService {
     constructor(private client: APIClient) {}
@@ -11,5 +11,9 @@ export class ProfileService {
         return this.client.get<{ profile: profileResponse[] }>(
             apiEndpoints.profile(username)
         );
+    }
+
+    update(user: userRequest): Promise<ApiResponse<{ profile: userResponse }>> {
+        return this.client.put(apiEndpoints.user, { user });
     }
 }
