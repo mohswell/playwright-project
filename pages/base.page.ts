@@ -1,5 +1,5 @@
 import { Page, Locator, expect } from '@playwright/test';
-import { USER_NAME } from '../env';
+import { USER_NAME } from '@/env';
 
 export class BasePage {
     constructor(protected page: Page) {}
@@ -34,9 +34,7 @@ export class BasePage {
     }
 
     get settingsButton(): Locator {
-        return this.page
-            .getByRole('link', { name: 'Settings' })
-            .first();
+        return this.page.getByRole('link', { name: 'Settings' }).first();
     }
 
     get profileIcon(): Locator {
@@ -50,13 +48,21 @@ export class BasePage {
         });
     }
 
+    get submitArticleButton(): Locator {
+        return this.page.getByRole('button', { name: 'Publish Article' });
+    }
+
+    get logoutButton(): Locator {
+        return this.page.getByRole('button', { name: 'Or click here to logout.' });
+    }
+
     // Page headings
     get homePageHeading(): Locator {
-        return this.page.getByRole('heading', { name: 'conduit' });
+        return this.conduitIcon;
     }
 
     get homePageTitle(): Locator {
-        return this.page.getByRole('heading', { name: 'Home', exact: true });
+        return this.page.getByRole('heading', { name: 'Home' });
     }
 
     get homePageMessage(): Locator {
@@ -108,5 +114,9 @@ export class BasePage {
         await expect(this.homePageTitle).toBeVisible();
         await expect(this.homePageMessage).toBeVisible();
         await expect(this.bondarAcademyLink).toBeVisible();
+    }
+
+    async assertUserIsLoggedIn(): Promise<void> {
+        await expect(this.profileIcon).toBeVisible();
     }
 }

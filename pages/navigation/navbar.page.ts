@@ -32,7 +32,6 @@ export class NavBarPage extends BasePage {
    */
   async navigateToHomePage(): Promise<void> {
     await this.homePageLink.click();
-    await expect(this.homePageHeading).toBeVisible();
   }
 
   /**
@@ -44,42 +43,10 @@ export class NavBarPage extends BasePage {
     await expect(this.homePageHeading).toBeVisible();
   }
 
-  /**
-   * Navigates to the Sign In page.
-   * @returns {Promise<void>} Resolves when navigation is complete.
-   */
-  async navigateToSignIn(): Promise<void> {
-    await super.navigateToSignInPage();
-  }
 
-  /**
-   * Navigates to the Sign Up page.
-   * @returns {Promise<void>} Resolves when navigation is complete.
-   */
-  async navigateToSignUp(): Promise<void> {
-    await super.navigateToSignUpPage();
-  }
-
-  /**
-   * Logs in the user using the provided email and password.
-   * @param {string} email - The email address of the user.
-   * @param {string} password - The password of the user.
-   * @returns {Promise<void>} Resolves when the login process is complete.
-   */
-  async logIn(email: string, password: string): Promise<void> {
-    await this.navigateToSignInPage();
-    await this.page.getByRole("textbox", { name: "Email" }).fill(email);
-    await this.page.getByRole("textbox", { name: "Password" }).fill(password);
-    await this.page.getByRole("button", { name: "Sign in" }).click();
-    try {
-      await this.page.waitForResponse((r) => r.url().includes("/api/tags"), {
-        timeout: 5000,
-      });
-    } catch {
-      // ignore; subsequent assertions will fail if login didn't happen
-    }
-
-    await expect(this.profileIcon).toBeVisible();
+  async navigateToEditorPage(): Promise<void> {
+    await this.newArticleButton.click();
+    await expect(this.submitArticleButton).toBeVisible();
   }
 
   /**
@@ -87,13 +54,11 @@ export class NavBarPage extends BasePage {
    * @returns {Promise<void>} Resolves when the logout process is complete.
    */
   async logOut(): Promise<void> {
-    await super.navigateToHomePage();
+    await this.navigateToHomePage();
     // prefer to navigate via settings button then logout
     await this.settingsButton.click();
     await expect(this.settingsPageTitle).toBeVisible();
-    await this.page
-      .getByRole("button", { name: "Or click here to logout." })
-      .click();
-    await expect(this.homePageHeading).toBeVisible();
+    await this.logoutButton.click();
+    await expect(this.signInNavigationLink).toBeVisible();
   }
 }

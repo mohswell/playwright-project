@@ -1,6 +1,6 @@
 import { test as base, expect } from "@playwright/test";
-import { SignInPage, SignUpPage, ProfilePage, SettingsPage, Homepage, NavBarPage } from "../../pages";
-import { URL } from "../../env";
+import { SignInPage, SignUpPage, ProfilePage, SettingsPage, Homepage, NavBarPage } from "@/pages";
+import { URL } from "@/env";
 
 export type FrameworkFixtures = {
   signInPage: SignInPage;
