@@ -16,6 +16,10 @@ export class ArticlePage extends BasePage {
         return this.page;
     }
 
+    getFavoriteButton(): Locator {
+        return this.page.locator('button:has(i.ion-heart)').first();
+    }
+
     /** Form inputs */
     get form(): {
         articleTitle: Locator;
@@ -103,5 +107,16 @@ export class ArticlePage extends BasePage {
                 this.articleView.tags.filter({ hasText: tag })
             ).toBeVisible();
         }
+    }
+
+    async clickLike() {
+        const btn = this.getFavoriteButton();
+
+        const countText = await btn.innerText();
+        const initialCount = parseInt(countText.trim(), 10);
+
+        await btn.click();
+
+        await expect(btn).toHaveText(String(initialCount + 1));
     }
 }

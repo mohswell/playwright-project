@@ -16,4 +16,12 @@ test.describe('Articles functionality', () => {
             });
         }
     );
+
+    test(
+        'Users can like Articles and save to favorites successfully',
+        { tag: '@Smoke' },
+        async ({ articlePage }) => {
+            await articlePage.clickLike();
+        }
+    );
 });
