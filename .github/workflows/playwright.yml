@@ -50,7 +50,7 @@ jobs:
 
     api-test:
         name: API Test
-        needs: setup-and-smoke-test
+        # needs: setup-and-smoke-test # Remove dependency between UI and API failures
         timeout-minutes: 60
         runs-on: ubuntu-latest
         outputs:
