@@ -53,7 +53,9 @@ export class BasePage {
     }
 
     get logoutButton(): Locator {
-        return this.page.getByRole('button', { name: 'Or click here to logout.' });
+        return this.page.getByRole('button', {
+            name: 'Or click here to logout.',
+        });
     }
 
     // Page headings
@@ -108,6 +110,11 @@ export class BasePage {
     async navigateToSignUpPage(): Promise<void> {
         await this.signUpNavigationLink.click();
         await expect(this.signUpPageTitle).toBeVisible();
+    }
+
+    async navigateToArticlePage(): Promise<void> {
+        await this.newArticleButton.click();
+        await expect(this.submitArticleButton).toBeVisible();
     }
 
     async assertHomepageDisplayed(): Promise<void> {
