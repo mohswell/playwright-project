@@ -1,6 +1,11 @@
+
+# [![Playwright Tests](https://github.com/mohswell/playwright-project/actions/workflows/playwright.yml/badge.svg)](https://github.com/mohswell/playwright-project/actions/workflows/playwright.yml)
+
+[![pages-build-deployment](https://github.com/mohswell/playwright-project/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/mohswell/playwright-project/actions/workflows/pages/pages-build-deployment)
+
 # Playwright Project
 
-This repository is a Playwright + TypeScript example test framework for the Conduit app. It contains API and UI tests, page objects, fixtures, and helpers to make writing reliable end-to-end tests easier.
+This repository is a Playwright + TypeScript example test framework for the Conduit app. It contains API and UI tests, page objects, modular fixtures, and OOP patterns to make writing reliable end-to-end tests easier.
 
 ## Status
 - The repository contains both API and UI tests. Some tests rely on environment variables and storageState produced by setup projects.
