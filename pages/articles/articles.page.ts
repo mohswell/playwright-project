@@ -20,6 +20,10 @@ export class ArticlePage extends BasePage {
         return this.page.locator('button:has(i.ion-heart)').first();
     }
 
+    getFirstArticle(): Locator {
+        return this.page.locator('a.preview-link:has(h1)').first();
+    }
+
     /** Form inputs */
     get form(): {
         articleTitle: Locator;
@@ -27,6 +31,8 @@ export class ArticlePage extends BasePage {
         articleDescription: Locator;
         articleTags: Locator;
         articleSubmitButton: Locator;
+        commentArticleInput: Locator;
+        commentSubmitButton: Locator;
     } {
         return {
             articleTitle: this.page.getByRole('textbox', {
@@ -42,14 +48,22 @@ export class ArticlePage extends BasePage {
             articleSubmitButton: this.page.getByRole('button', {
                 name: 'Publish Article',
             }),
+            commentArticleInput: this.page.getByRole('textbox', {
+                name: 'Write a comment...',
+            }),
+            commentSubmitButton: this.page.getByRole('button', {
+                name: 'Post Comment',
+            }),
         };
     }
 
     get actions(): {
         publishArticle: Locator;
+        postComment: Locator;
     } {
         return {
             publishArticle: this.form.articleSubmitButton,
+            postComment: this.form.commentSubmitButton,
         };
     }
 
@@ -110,6 +124,7 @@ export class ArticlePage extends BasePage {
     }
 
     async clickLike() {
+        await super.navigateToHomePage();
         const btn = this.getFavoriteButton();
 
         const countText = await btn.innerText();
@@ -118,5 +133,15 @@ export class ArticlePage extends BasePage {
         await btn.click();
 
         await expect(btn).toHaveText(String(initialCount + 1));
+    }
+
+    async navigateToFirstArticle() {
+        const firstArticle = this.getFirstArticle();
+        await firstArticle.click();
+    }
+
+    async commentOnArticle(comment: string): Promise<void> {
+        await this.form.commentArticleInput.fill(comment);
+        await this.actions.postComment.click();
     }
 }
