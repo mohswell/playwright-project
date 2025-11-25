@@ -1,5 +1,5 @@
-import { test, expect } from '@/fixtures';
-import { generateRandomArticle } from '@/helpers/faker';
+import { test } from '@/fixtures';
+import { generateCommentData, generateRandomArticle } from '@/helpers/faker';
 
 test.describe('Articles functionality', () => {
     test(
@@ -14,6 +14,24 @@ test.describe('Articles functionality', () => {
                 description: articleData.description,
                 tags: articleData.tags,
             });
+        }
+    );
+
+    test(
+        'Users can like Articles and save to favorites successfully',
+        { tag: '@Smoke' },
+        async ({ articlePage }) => {
+            await articlePage.clickLike();
+        }
+    );
+
+    test(
+        'Users can comment on Articles successfully',
+        { tag: '@Smoke' },
+        async ({ articlePage }) => {
+            await articlePage.navigateToFirstArticle();
+            const commentText = generateCommentData().comment.body;
+            await articlePage.commentOnArticle(commentText);
         }
     );
 });
