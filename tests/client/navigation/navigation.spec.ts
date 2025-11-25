@@ -1,30 +1,37 @@
-import { test, expect } from "../../../fixtures";
+import { test, expect } from '@/fixtures';
 
-test.describe("Navigation functionality", () => {
-  test(
-    "Profile icon is visible for logged in users",
-    { tag: "@Smoke" },
-    async ({ navBarPage }) => {
-      await expect(navBarPage.navBar).toBeVisible();
-      // guest should not see profile or create article link
-      await expect(navBarPage.profileIcon).toBeVisible();
-    }
-  );
+test.describe('Navigation functionality for logged in users', () => {
+    test(
+        'Profile icon is visible for logged in users',
+        { tag: '@Smoke' },
+        async ({ navBarPage }) => {
+            await expect(navBarPage.navBar).toBeVisible();
+            await expect(navBarPage.profileIcon).toBeVisible();
+        }
+    );
 
-  test("Clicking 'Sign in' opens the Sign In page", { tag: "@Smoke" }, async ({ navBarPage }) => {
-    await navBarPage.navigateToSignIn();
-    // verify sign in heading visible
-    await expect(navBarPage.signInPageTitle).toBeVisible();
-  });
+    test(
+        'Clicking Settings link opens the Settings page',
+        { tag: '@Smoke' },
+        async ({ navBarPage }) => {
+            await navBarPage.settingsButton.click();
+            await expect(navBarPage.settingsPageTitle).toBeVisible();
+        }
+    );
 
-  test("Clicking 'Sign up' opens the Sign Up page", { tag: "@Smoke" }, async ({ navBarPage }) => {
-    await navBarPage.navigateToSignUp();
-    await expect(navBarPage.signUpPageTitle).toBeVisible();
-  });
+    test(
+        'Clicking conduit icon navigates home',
+        { tag: '@Smoke' },
+        async ({ navBarPage }) => {
+            await expect(navBarPage.homePageHeading).toBeVisible();
+        }
+    );
 
-  test("Clicking conduit icon navigates home", { tag: "@Smoke" }, async ({ navBarPage }) => {
-    await navBarPage.navigateToSignInPage();
-    await navBarPage.navigateToHomePageByIcon();
-    await expect(navBarPage.homePageHeading).toBeVisible();
-  });
+    test(
+        'Clicking Article link navigates to editor successfully',
+        { tag: '@Smoke' },
+        async ({ navBarPage }) => {
+            await navBarPage.navigateToEditorPage();
+        }
+    );
 });

@@ -28,7 +28,8 @@ test.describe('User Profile', () => {
             });
 
             await expect(response.status).toBe(httpStatusCodes.ok);
-            await expect(response.body.profile.user.email).toBeDefined();
+            await expect(response.body.user.email).toBeDefined();
+            await expect(response.body.user.username).toBe(USER_NAME);
         }
     );
 });

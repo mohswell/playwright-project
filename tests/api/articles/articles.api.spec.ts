@@ -1,20 +1,8 @@
 import { expect, test } from '../../../fixtures';
-import { generateArticleData } from '../../../helpers/faker';
 import { httpStatusCodes } from '../../../helpers/utils';
 import { ArticleRequest } from '../../../types/schema';
 
-test.describe('Articles', () => {
-    let createdArticle: { slug: string; title: string };
-
-    // Runs before each test to create a new article
-    test.beforeEach(async ({ articles }) => {
-        const articleData = generateArticleData();
-        const createResponse = await articles.create(articleData);
-
-        expect(createResponse.status).toBe(httpStatusCodes.created);
-        createdArticle = createResponse.body.article;
-    });
-
+test.describe('Articles API', () => {
     test(
         'User can access articles successfully',
         { tag: '@API' },
@@ -29,12 +17,11 @@ test.describe('Articles', () => {
     test(
         'User can update articles successfully',
         { tag: '@API' },
-        async ({ articles }) => {
+        async ({ articles, createdArticle }) => {
             const newTitle = `Updated - ${Date.now()}`;
 
             const updatedData: ArticleRequest = {
                 article: {
-                    ...createdArticle,
                     title: newTitle,
                 },
             };
@@ -52,7 +39,7 @@ test.describe('Articles', () => {
     test(
         'User can delete articles successfully',
         { tag: '@API' },
-        async ({ articles }) => {
+        async ({ articles, createdArticle }) => {
             const deleteResponse = await articles.delete(createdArticle.slug);
 
             expect(deleteResponse.status).toBe(httpStatusCodes.noContent);
