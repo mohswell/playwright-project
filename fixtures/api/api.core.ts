@@ -1,11 +1,15 @@
+import { API_URL } from '@/env';
+import { generateArticleData } from '@/helpers/faker';
+import {
+    APIClient,
+    AuthService,
+    ArticleService,
+    TagsService,
+    ProfileService,
+    ArticleCommentsService as CommentsService,
+} from '@/services';
+import { Article } from '@/types/schema';
 import { test as base, expect } from '@playwright/test';
-import { API_URL } from '../../env';
-import { APIClient } from '../../services/api.service';
-import { ArticleService } from '../../services/articles.service';
-import { AuthService } from '../../services/auth.service';
-import { TagsService } from '../../services/tags.service';
-import { ArticleCommentsService as CommentsService } from '../../services/comments.service';
-import { ProfileService } from '@/services/profile.service';
 
 type Fixtures = {
     api: APIClient;
@@ -14,6 +18,7 @@ type Fixtures = {
     tags: TagsService;
     comments: CommentsService;
     profile: ProfileService;
+    createdArticle: Article;
 };
 
 export const test = base.extend<Fixtures>({
@@ -35,6 +40,16 @@ export const test = base.extend<Fixtures>({
     },
     profile: async ({ api }, use) => {
         await use(new ProfileService(api));
+    },
+    // Create a fresh article for tests that need article data.
+    // Tests can accept `createdArticle` to get the Article object (includes slug/title).
+    createdArticle: async ({ articles }, use) => {
+        const articleData = generateArticleData();
+        const createResp = await articles.create(articleData);
+        expect(createResp.status).toBeGreaterThanOrEqual(200);
+        expect(createResp.status).toBeLessThan(300);
+        const article = createResp.body.article as Article;
+        await use(article);
     },
 });
 
