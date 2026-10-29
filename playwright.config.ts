@@ -11,16 +11,11 @@ dotenv.config({ path: environmentPath });
 
 import { STORAGE_PATH } from './types/constants';
 
-// Load env variables, then require env exports so they read from process.env.
-// Use runtime require to avoid static import hoisting which can run `env/index.ts`
-// before dotenv has populated process.env.
-/* eslint-disable @typescript-eslint/no-var-requires */
 const { URL } = require('./env');
 
 export default defineConfig({
     globalSetup: require.resolve('./global.ts'),
     testDir: './tests',
-    /* Run tests in files in parallel */
     fullyParallel: true,
     /* Fail the build on CI if you accidentally left test.only in the source code. */
     forbidOnly: !!process.env.CI,
@@ -35,7 +30,6 @@ export default defineConfig({
 
     /* Configure projects for major browsers */
     projects: [
-        // CLIENT SETUP
         {
             name: 'client-setup',
             testMatch: /.*\.client\.setup\.ts/,
@@ -55,8 +49,6 @@ export default defineConfig({
                 viewport: { width: 1366, height: 768 },
             },
         },
-
-        // API SETUP
         {
             name: 'api-setup',
             testMatch: /.*\.api\.setup\.ts/,

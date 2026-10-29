@@ -76,3 +76,15 @@ npx prettier --write "**/*.{ts,tsx,js,jsx,json,md}"
 If you need help with failing tests or extending fixtures, open an issue or create a PR with a reproducible failing test and I’ll help debug.
 
 ---
+
+
+## AI Test Agents
+
+This repo is set up for [Playwright Test Agents](https://playwright.dev/docs/test-agents): planner, generator, healer.
+
+- Agent definitions: `.github/agents/` (VS Code), `.claude/agents/`, `.opencode/prompts/`
+- MCP config: `.vscode/mcp.json`, `.mcp.json`, `opencode.json`
+- Seed test: `tests/seed.spec.ts`
+- Specs: `specs/`
+
+Workflow: planner -> specs; generator -> tests; healer -> fix failures. Regenerate after Playwright updates: `npx playwright init-agents --loop <vscode|claude|opencode>`.
