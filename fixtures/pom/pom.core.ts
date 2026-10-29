@@ -22,6 +22,10 @@ export type FrameworkFixtures = {
 };
 
 export const test = base.extend<FrameworkFixtures>({
+    page: async ({ page }, use) => {
+        await page.goto(URL);
+        await use(page); // Hand over control to the test
+    },
     homePage: async ({ page }, use) => {
         await use(new Homepage(page));
     },
@@ -43,11 +47,6 @@ export const test = base.extend<FrameworkFixtures>({
 
     articlePage: async ({ page }, use) => {
         await use(new ArticlePage(page));
-    },
-
-    page: async ({ page }, use) => {
-        await page.goto(URL);
-        await use(page); // Hand over control to the test
     },
 });
 
