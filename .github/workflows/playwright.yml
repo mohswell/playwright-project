@@ -40,7 +40,7 @@ jobs:
     setup-and-smoke-test:
         name: Setup and Smoke Test
         needs: lint-and-typecheck
-        timeout-minutes: 60
+        timeout-minutes: 20
         runs-on: ubuntu-latest
         outputs:
             smoke_outcome: ${{ steps.smoke.outcome }}
@@ -66,7 +66,7 @@ jobs:
         name: API Test
         needs: lint-and-typecheck
         # needs: setup-and-smoke-test # Remove dependency between UI and API failures
-        timeout-minutes: 60
+        timeout-minutes: 20
         runs-on: ubuntu-latest
         outputs:
             api_outcome: ${{ steps.api.outcome }}
@@ -92,7 +92,7 @@ jobs:
         name: Merge Report
         if: always()
         needs: [setup-and-smoke-test, api-test]
-        timeout-minutes: 60
+        timeout-minutes: 20
         runs-on: ubuntu-latest
         steps:
             - name: Checkout code
