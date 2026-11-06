@@ -38,7 +38,12 @@ export class BasePage {
     }
 
     get profileIcon(): Locator {
-        return this.page.getByRole('link', { name: USER_NAME });
+        // Scope to the navigation bar to avoid matching author links
+        // on article previews that share the same display name
+        return this.page
+            .getByRole('navigation')
+            .getByRole('link', { name: USER_NAME })
+            .first();
     }
 
     get editProfileSettingsButton(): Locator {
