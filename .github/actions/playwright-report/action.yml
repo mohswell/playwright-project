@@ -11,7 +11,7 @@ inputs:
     blob-report-retention-days:
         description: 'Retention days for blob report'
         required: false
-        default: '3'
+        default: '14'
     blob-report-path:
         description: 'Path for blob report'
         required: false

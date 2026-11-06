@@ -13,7 +13,8 @@
     "test:sanity": "npx playwright test --grep @Sanity --project=chromium",
     "test:api": "npx playwright test --grep @API",
     "test:regression": "npx playwright test --grep @Regression --project=chromium",
-    "test:e2e": "npx playwright test"
+    "test:e2e": "npx playwright test",
+    "typecheck": "tsc --noEmit"
   },
   "keywords": [],
   "author": "Muhammad Said",
@@ -26,10 +27,10 @@
     "@typescript-eslint/eslint-plugin": "^8.47.0",
     "@typescript-eslint/parser": "^8.47.0",
     "eslint": "^9.39.1",
-    "jiti": "^1.16.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-playwright": "^2.3.0",
     "eslint-plugin-prettier": "^5.5.4",
+    "jiti": "^2.7.0",
     "prettier": "^3.6.2"
   },
   "dependencies": {

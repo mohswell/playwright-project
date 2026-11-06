@@ -24,8 +24,22 @@ concurrency:
     cancel-in-progress: false
 
 jobs:
+    lint-and-typecheck:
+        name: Lint and Typecheck
+        runs-on: ubuntu-latest
+        timeout-minutes: 15
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: lts/*
+                  cache: 'npm'
+            - run: npm ci --no-audit --no-fund
+            - run: npm run typecheck
+
     setup-and-smoke-test:
         name: Setup and Smoke Test
+        needs: lint-and-typecheck
         timeout-minutes: 60
         runs-on: ubuntu-latest
         outputs:
@@ -50,6 +64,7 @@ jobs:
 
     api-test:
         name: API Test
+        needs: lint-and-typecheck
         # needs: setup-and-smoke-test # Remove dependency between UI and API failures
         timeout-minutes: 60
         runs-on: ubuntu-latest
@@ -116,7 +131,7 @@ jobs:
               with:
                   name: Merged HTML Reports
                   path: playwright-report
-                  retention-days: 3
+                  retention-days: 14
 
     build-report:
         name: Build Report
