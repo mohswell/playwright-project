@@ -45,6 +45,5 @@ runs:
 
         - name: Install Playwright Browsers
           if: steps.cache-browsers.outputs.cache-hit != 'true' || inputs.caching-browsers != 'true'
-          timeout-minutes: 10
           run: npx playwright install --with-deps chromium
           shell: bash
