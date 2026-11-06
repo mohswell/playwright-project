@@ -19,13 +19,25 @@ export default defineConfig({
     fullyParallel: true,
     /* Fail the build on CI if you accidentally left test.only in the source code. */
     forbidOnly: !!process.env.CI,
+    /* Fail fast when too many tests break. */
+    maxFailures: process.env.CI ? 5 : undefined,
     retries: process.env.CI ? 2 : 0,
-    workers: process.env.CI ? 1 : undefined,
-    reporter: process.env.CI ? [['blob'], ['github']] : 'html',
+    workers: process.env.CI ? 2 : undefined,
+    reporter: process.env.CI
+        ? [['blob'], ['github'], ['junit', { outputFile: 'test-results/results.xml' }]]
+        : 'html',
     use: {
         /* Base URL to use in actions like `await page.goto('')`. */
         baseURL: URL,
-        trace: 'on-first-retry',
+        /* Capture rich artifacts on failure for debugging. */
+        trace: 'retain-on-failure',
+        screenshot: 'only-on-failure',
+        video: 'retain-on-failure',
+        actionTimeout: 15_000,
+        navigationTimeout: 30_000,
+    },
+    expect: {
+        timeout: 10_000,
     },
 
     /* Configure projects for major browsers */

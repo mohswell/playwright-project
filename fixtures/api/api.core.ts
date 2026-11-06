@@ -50,6 +50,7 @@ export const test = base.extend<Fixtures>({
         expect(createResp.status).toBeLessThan(300);
         const article = createResp.body.article as Article;
         await use(article);
+        await articles.delete(article.slug).catch(() => undefined);
     },
 });
 

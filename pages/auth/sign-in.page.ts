@@ -62,7 +62,5 @@ export class SignInPage extends BasePage {
     await expect(this.form.emailOrPasswordInvalidError).toBeVisible();
   }
 
-  async assertUserIsLoggedIn(): Promise<void> {
-    await expect(this.profileIcon).toBeVisible();
-  }
+  // assertUserIsLoggedIn is inherited from BasePage
 }
