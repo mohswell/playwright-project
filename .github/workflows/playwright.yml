@@ -124,15 +124,25 @@ jobs:
             - name: Check if blob reports exist
               run: |
                   if [ ! -d "./all-blob-reports" ] || [ -z "$(ls -A ./all-blob-reports)" ]; then
-                      echo "No blob reports found. Creating empty directory and generating a default report."
+                      echo "No blob reports found."
                       mkdir -p ./all-blob-reports
                       mkdir -p ./playwright-report
                       echo '<html><body><h1>No test reports available</h1><p>No blob reports were generated or uploaded.</p></body></html>' > ./playwright-report/index.html
                       exit 0
                   fi
+                  echo "Found blob reports:"; ls -la ./all-blob-reports
 
             - name: Merge into HTML Report
               run: npx playwright merge-reports --reporter html ./all-blob-reports
+
+            - name: Verify merged report
+              run: |
+                  echo "playwright-report contents:"; ls -la ./playwright-report || true
+                  if [ ! -f ./playwright-report/index.html ]; then
+                      echo "Merge did not produce index.html; creating fallback."
+                      mkdir -p ./playwright-report
+                      echo '<html><body><h1>No test reports available</h1></body></html>' > ./playwright-report/index.html
+                  fi
 
             - name: Upload HTML report
               uses: actions/upload-artifact@v4
