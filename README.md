@@ -1,5 +1,5 @@
 
-[![Playwright Tests](https://github.com/mohswell/playwright-project/actions/workflows/playwright.yml/badge.svg)](https://github.com/mohswell/playwright-project/actions/workflows/playwright.yml) 
+[![Playwright Tests](https://github.com/mohswell/playwright-project/actions/workflows/playwright.yml/badge.svg?branch=main)](https://github.com/mohswell/playwright-project/actions/workflows/playwright.yml) 
 [![Pages Build Deployment](https://github.com/mohswell/playwright-project/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/mohswell/playwright-project/actions/workflows/pages/pages-build-deployment)
 
 
