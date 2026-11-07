@@ -40,8 +40,10 @@ jobs:
     setup-and-smoke-test:
         name: Setup and Smoke Test
         needs: lint-and-typecheck
-        timeout-minutes: 20
         runs-on: ubuntu-latest
+        container:
+            image: mcr.microsoft.com/playwright:v1.56.1-noble
+        timeout-minutes: 20
         outputs:
             smoke_outcome: ${{ steps.smoke.outcome }}
         steps:
@@ -50,6 +52,8 @@ jobs:
 
             - name: Playwright Setup on Runner
               uses: ./.github/actions/playwright-setup
+              with:
+                  caching-browsers: 'false'
 
             - name: Run Smoke tests
               id: smoke
@@ -65,9 +69,11 @@ jobs:
     api-test:
         name: API Test
         needs: lint-and-typecheck
+        runs-on: ubuntu-latest
+        container:
+            image: mcr.microsoft.com/playwright:v1.56.1-noble
         # needs: setup-and-smoke-test # Remove dependency between UI and API failures
         timeout-minutes: 20
-        runs-on: ubuntu-latest
         outputs:
             api_outcome: ${{ steps.api.outcome }}
         steps:
@@ -76,6 +82,8 @@ jobs:
 
             - name: Playwright Setup on Runner
               uses: ./.github/actions/playwright-setup
+              with:
+                  caching-browsers: 'false'
 
             - name: Run API tests
               id: api
@@ -116,15 +124,25 @@ jobs:
             - name: Check if blob reports exist
               run: |
                   if [ ! -d "./all-blob-reports" ] || [ -z "$(ls -A ./all-blob-reports)" ]; then
-                      echo "No blob reports found. Creating empty directory and generating a default report."
+                      echo "No blob reports found."
                       mkdir -p ./all-blob-reports
                       mkdir -p ./playwright-report
                       echo '<html><body><h1>No test reports available</h1><p>No blob reports were generated or uploaded.</p></body></html>' > ./playwright-report/index.html
                       exit 0
                   fi
+                  echo "Found blob reports:"; ls -la ./all-blob-reports
 
             - name: Merge into HTML Report
               run: npx playwright merge-reports --reporter html ./all-blob-reports
+
+            - name: Verify merged report
+              run: |
+                  echo "playwright-report contents:"; ls -la ./playwright-report || true
+                  if [ ! -f ./playwright-report/index.html ]; then
+                      echo "Merge did not produce index.html; creating fallback."
+                      mkdir -p ./playwright-report
+                      echo '<html><body><h1>No test reports available</h1></body></html>' > ./playwright-report/index.html
+                  fi
 
             - name: Upload HTML report
               uses: actions/upload-artifact@v4
