@@ -40,8 +40,10 @@ jobs:
     setup-and-smoke-test:
         name: Setup and Smoke Test
         needs: lint-and-typecheck
-        timeout-minutes: 20
         runs-on: ubuntu-latest
+        container:
+            image: mcr.microsoft.com/playwright:v1.56.1-noble
+        timeout-minutes: 20
         outputs:
             smoke_outcome: ${{ steps.smoke.outcome }}
         steps:
@@ -50,6 +52,8 @@ jobs:
 
             - name: Playwright Setup on Runner
               uses: ./.github/actions/playwright-setup
+              with:
+                  caching-browsers: 'false'
 
             - name: Run Smoke tests
               id: smoke
@@ -65,9 +69,11 @@ jobs:
     api-test:
         name: API Test
         needs: lint-and-typecheck
+        runs-on: ubuntu-latest
+        container:
+            image: mcr.microsoft.com/playwright:v1.56.1-noble
         # needs: setup-and-smoke-test # Remove dependency between UI and API failures
         timeout-minutes: 20
-        runs-on: ubuntu-latest
         outputs:
             api_outcome: ${{ steps.api.outcome }}
         steps:
@@ -76,6 +82,8 @@ jobs:
 
             - name: Playwright Setup on Runner
               uses: ./.github/actions/playwright-setup
+              with:
+                  caching-browsers: 'false'
 
             - name: Run API tests
               id: api
